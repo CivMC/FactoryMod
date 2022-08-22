@@ -2,6 +2,7 @@ package com.github.igotyou.FactoryMod.recipes;
 
 import com.github.igotyou.FactoryMod.factories.FurnCraftChestFactory;
 import com.github.igotyou.FactoryMod.utility.MultiInventoryWrapper;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,7 +68,11 @@ public class LoreRemoveRecipe extends InputRecipe{
 	@Override
 	public List<ItemStack> getInputRepresentation(Inventory i, FurnCraftChestFactory fccf) {
 		if (i == null) {
-			return Arrays.asList(exampleInput.clone());
+			List<ItemStack> itemStackRepresentation = input.getItemStackRepresentation();
+			List<ItemStack> inputs = new ArrayList<>(itemStackRepresentation.size() + 1);
+			inputs.addAll(itemStackRepresentation);
+			inputs.add(exampleInput.clone());
+			return inputs;
 		}
 		List<ItemStack> returns = createLoredStacksForInfo(i);
 		ItemStack toSt = itemToCleanse.getItemStackRepresentation().get(0);
