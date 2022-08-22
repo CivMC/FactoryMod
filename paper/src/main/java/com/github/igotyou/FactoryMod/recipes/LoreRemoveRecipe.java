@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import vg.civcraft.mc.civmodcore.inventory.items.ItemMap;
 import vg.civcraft.mc.civmodcore.inventory.items.ItemUtils;
+import vg.civcraft.mc.civmodcore.inventory.items.MetaUtils;
 
 public class LoreRemoveRecipe extends InputRecipe{
 
@@ -76,9 +77,11 @@ public class LoreRemoveRecipe extends InputRecipe{
 		}
 		List<ItemStack> returns = createLoredStacksForInfo(i);
 		ItemStack toSt = itemToCleanse.getItemStackRepresentation().get(0);
-		ItemUtils.addComponentLore(toSt, infoComponent);
-		ItemUtils.addLore(toSt, ChatColor.GREEN + "Enough materials for " + new ItemMap(toSt).getMultiplesContainedIn(i)
-				+ " runs");
+		toSt.editMeta(meta -> {
+			MetaUtils.addComponentLore(meta, infoComponent);
+			MetaUtils.addLore(meta, ChatColor.GREEN + "Enough materials for " + new ItemMap(toSt).getMultiplesContainedIn(i)
+					+ " runs");
+		});
 		returns.add(toSt);
 		return returns;
 	}
