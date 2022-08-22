@@ -9,12 +9,14 @@ import java.util.List;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.apache.commons.collections4.CollectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import vg.civcraft.mc.civmodcore.chat.ChatUtils;
 import vg.civcraft.mc.civmodcore.inventory.items.ItemMap;
 import vg.civcraft.mc.civmodcore.inventory.items.ItemUtils;
 import vg.civcraft.mc.civmodcore.inventory.items.MetaUtils;
@@ -94,7 +96,7 @@ public class LoreRemoveRecipe extends InputRecipe{
 					is,
 					ChatColor.GREEN
 							+ "Enough materials for "
-							+ String.valueOf(Math.min(itemToCleanse.getMultiplesContainedIn(i), input.getMultiplesContainedIn(i)))
+							+ Math.min(itemToCleanse.getMultiplesContainedIn(i), input.getMultiplesContainedIn(i))
 							+ " runs");
 		}
 		List<ItemStack> stacks = new LinkedList<>();
@@ -103,15 +105,21 @@ public class LoreRemoveRecipe extends InputRecipe{
 	}
 
 	private boolean checkIfHasLore(ItemStack itemStack) {
-		if (!itemStack.getItemMeta().hasLore()) {
+		ItemMeta meta = itemStack.getItemMeta();
+		if (meta == null) {
 			return false;
 		}
-		return !itemStack.getItemMeta().lore().isEmpty();
+		return CollectionUtils.isEmpty(meta.lore());
 	}
 
 	@Override
 	public List<String> getTextualInputRepresentation(Inventory i, FurnCraftChestFactory fccf) {
-		return Arrays.asList("1 " + ItemUtils.getItemName(exampleInput));
+		List<String> inputNames = new ArrayList<>();
+		inputNames.add(exampleInput.getAmount() + " " + ChatUtils.stringify(ItemUtils.asTranslatable(exampleInput)));
+		for (ItemStack is : input.getItemStackRepresentation()) {
+			inputNames.add(is.getAmount() + " " + ChatUtils.stringify(ItemUtils.asTranslatable(is)));
+		}
+		return inputNames;
 	}
 
 	@Override
