@@ -693,6 +693,23 @@ factories:
 
 #appliedLore is the lore which is applied as replacement for the removed lore. This list may not be empty, but it may contain multiple entries
 
+
+#10. Remove Lore Recipe
+
+#This recipe is quite specific, We use it to get rid of the lore and PDC tag on an ItemStack that was placed by SimpleAdminHacks.
+
+#removeLore:
+# type: REMOVELORE
+# input:
+#   emeralds:
+#     material: EMERALD
+#     amount: 9
+# removeLore:
+#   chestplate:
+#     material: DIAMOND_CHESTPLATE
+
+# This will completely overwrite an items ItemMeta with a fresh copy
+
 #GENERAL NOTE:
 
 # Every recipe type can include at the same level as "name: " the following, although only FCC's will respect it currently:
