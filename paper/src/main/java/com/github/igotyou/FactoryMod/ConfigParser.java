@@ -18,6 +18,7 @@ import com.github.igotyou.FactoryMod.recipes.FactoryMaterialReturnRecipe;
 import com.github.igotyou.FactoryMod.recipes.IRecipe;
 import com.github.igotyou.FactoryMod.recipes.InputRecipe;
 import com.github.igotyou.FactoryMod.recipes.LoreEnchantRecipe;
+import com.github.igotyou.FactoryMod.recipes.LoreRemoveRecipe;
 import com.github.igotyou.FactoryMod.recipes.PlayerHeadRecipe;
 import com.github.igotyou.FactoryMod.recipes.PrintBookRecipe;
 import com.github.igotyou.FactoryMod.recipes.PrintNoteRecipe;
@@ -790,6 +791,25 @@ public class ConfigParser {
 			}
 			result = new LoreEnchantRecipe(identifier, name, productionTime, input, toolMap, appliedLore,
 					overwrittenLore);
+			break;
+		case "REMOVELORE":
+			ConfigurationSection loreItem = config.getConfigurationSection("removeLore");
+			ItemMap materials;
+			if (loreItem == null) {
+				if (!(parentRecipe instanceof LoreRemoveRecipe)) {
+					materials = new ItemMap();
+				} else {
+					materials = ((LoreRemoveRecipe) parentRecipe).getItemToCleanse().clone();
+				}
+			} else {
+				materials = ConfigHelper.parseItemMap(loreItem);
+			}
+			if (materials.getTotalItemAmount() == 0) {
+				plugin.warning("Lore removing recipe " + name + " had no item specified, it was skipped");
+				result = null;
+				break;
+			}
+			result = new LoreRemoveRecipe(identifier, name, productionTime, input, materials);
 			break;
 		case "RECIPEMODIFIERUPGRADE":
 			int rank = config.getInt("rank");
