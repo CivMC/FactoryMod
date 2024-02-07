@@ -55,7 +55,7 @@ public class WordBankRecipe extends InputRecipe {
 		if (!ItemUtils.isValidItem(toApply)) {
 			return false;
 		}
-		if (!ItemUtils.getDisplayName(toApply).isEmpty()) {
+		if (!ItemUtils.getDisplayName(toApply).isEmpty() && ItemUtils.getDisplayName(toApply).contains("§")) {
 			return false;
 		}
 		ItemMap input = new ItemMap();
